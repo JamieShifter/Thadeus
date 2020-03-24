@@ -1,0 +1,14 @@
+.idea/
+__pycache__/
+dbs/
+desktop.ini
+task.txt
+test.txt
+venv/
+wx/Demo.py
+wx.GUI wera test.py
+wx/__pycache__/
+wx/debug.fbp
+wx/demo.fbp
+wxPythontrial.py
+wx/GUI wera test.py
