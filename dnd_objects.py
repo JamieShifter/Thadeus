@@ -266,7 +266,7 @@ Parameters will have to be passed as in the example given below:
         pass
 
 
-    def attack(self, weapon="current", *targets): #TODO: If character has more dexterity than strength, he can choose to use it as a modifier if a weapon is light enough:/
+    def attack(self, weapon, *targets): #TODO: If character has more dexterity than strength, he can choose to use it as a modifier if a weapon is light enough:/
         wpn = self.weaponUsedNow() if weapon == "current" else dnd_data.items[weapon] #TODO: Sneak attack grants a modifier to dexterity based attacks(check the class sheet)
         hit_score = 0
         hit_roll = 0
