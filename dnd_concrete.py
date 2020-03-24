@@ -4,14 +4,6 @@ import dnd_data
 
 class perks:
 
-    def parry(*targets):
-        if len(targets) > 1:
-            pass
-        else:
-            for target in targets:
-                target.hide() # just to check if it works, indeed it does
-
-
 
     def false_appearance(caster, *targets):
         

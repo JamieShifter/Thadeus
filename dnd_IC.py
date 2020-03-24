@@ -28,9 +28,7 @@ class readyTriggerFlagDefinition(observer_pattern.Subject):
 
 
 def usePerk(caster, perk, *targets):
-    if perk == "parry":
-        p_con.perks.parry(*targets)
-    elif perk == "false_appearance":
+    if perk == "false_appearance":
         p_con.perks.false_appearance(caster, *targets)
     elif perk == "paralyzing_ray":
         p_con.perks.paralyzing_ray(*targets)

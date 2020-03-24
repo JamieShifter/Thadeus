@@ -101,6 +101,10 @@ Parameters will have to be passed as in the example given below:
         eq_on_list = self.eq_on[:]
         return eq_on_list[0]
 
+    def initiative(self):
+        score = (self.abilities["dex"] - 10)//2
+        return score
+
 
     def watched(self, action):
         self.watchlist[action] = 1
@@ -269,9 +273,9 @@ Parameters will have to be passed as in the example given below:
 
     def attack(self, weapon="current", *targets): #TODO: If character has more dexterity than strength, he can choose to use it as a modifier if a weapon is light enough:/
         wpn = self.weaponUsedNow() if weapon == "current" else dnd_data.items[weapon] #TODO: Sneak attack grants a modifier to dexterity based attacks(check the class sheet)
-        hit_score = 0
         hit_roll = 0
         damage_score = 0
+        total_ac = 0
         for i in targets:
             # ============ #
             # dodge_mechanics
@@ -294,14 +298,18 @@ Parameters will have to be passed as in the example given below:
                 hit_score = hit_roll + modifier + self.proficiency_bonus
                 print("... Adding hit roll ({}), modifier ({}) and proficiency bonus ({}), sum is: {}".format(
                     hit_roll, modifier, self.proficiency_bonus, hit_score))
+                if "parry" in i.perks:
+                    total_ac += dnd_mechanics.roll(6, 1)
+                else:
+                    total_ac = i.ac
                 if hit_roll == 20:
                     damage_roll = dnd_mechanics.roll(self.hit_dice[0], self.hit_dice[1] * 2)
-                elif hit_roll != 20 and hit_score >= i.ac:
+                elif hit_roll != 20 and hit_score >= total_ac:
                     damage_roll = dnd_mechanics.roll(self.hit_dice[0], self.hit_dice[1])
                 else:
                 # ===== MISS ====== #
                     print("{} missed, hit score({}) is lesser that {} armor class ({})".format(self.name, hit_score,
-                                                                                           i.name, i.ac))
+                                                                                           i.name, total_ac))
                     break
                 damage_score = damage_roll + modifier
                 damage_type = wpn["damage"][2]
