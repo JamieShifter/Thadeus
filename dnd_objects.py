@@ -41,7 +41,7 @@ Parameters will have to be passed as in the example given below:
         self.ac = 0  # armor class/how much you have to throw to hit somebody
         self.eq = {}  # list of items
         self.eq_on = {}  # list of items that you wear
-        self.physical_state = []  # incapacitated, prone, crouch, normal, poisoned
+        self.physical_state = "normal"  # incapacitated, prone, crouch, normal, poisoned
         self.mental_state = ""  # yet to be implemented
         self.engaged = 0  # 1 means you are currently in combat, 0 means you are disengaged
         self.trigger_dodge = 0  # 1 means you will try to dodge the next attack coming at you, uses action
@@ -101,13 +101,9 @@ Parameters will have to be passed as in the example given below:
         eq_on_list = self.eq_on[:]
         return eq_on_list[0]
 
-<<<<<<< HEAD
-=======
     def initiative(self):
         score = (self.abilities["dex"] - 10)//2
         return score
-
->>>>>>> e4817f1ec2be1a4db4e7596c98d6fcf037e885d1
 
     def watched(self, action):
         self.watchlist[action] = 1
@@ -257,10 +253,7 @@ Parameters will have to be passed as in the example given below:
 
     def usePerk(self, perk, *targets):
         targetlist = []
-<<<<<<< HEAD
-=======
         caster = self
->>>>>>> e4817f1ec2be1a4db4e7596c98d6fcf037e885d1
         if len(targets) == 0:
             dnd_IC.usePerk(perk, self)
         elif self in targets and len(targets) > 1:
@@ -268,34 +261,20 @@ Parameters will have to be passed as in the example given below:
             targets.remove(self)
             for i in targets:
                 targetlist.append(i)
-<<<<<<< HEAD
-                dnd_IC.usePerk(perk, targetlist)
-        else:
-            dnd_IC.usePerk(perk, *targets)
-=======
                 dnd_IC.usePerk(caster, perk, targetlist)
         else:
             dnd_IC.usePerk(caster, perk, *targets)
->>>>>>> e4817f1ec2be1a4db4e7596c98d6fcf037e885d1
 
 
     def castSpell(self, spell, *targets): # TODO: Add spells and spellcasting
         pass
 
 
-<<<<<<< HEAD
-    def attack(self, weapon, *targets): #TODO: If character has more dexterity than strength, he can choose to use it as a modifier if a weapon is light enough:/
-        wpn = self.weaponUsedNow() if weapon == "current" else dnd_data.items[weapon] #TODO: Sneak attack grants a modifier to dexterity based attacks(check the class sheet)
-        hit_score = 0
-        hit_roll = 0
-        damage_score = 0
-=======
     def attack(self, weapon="current", *targets): #TODO: If character has more dexterity than strength, he can choose to use it as a modifier if a weapon is light enough:/
         wpn = self.weaponUsedNow() if weapon == "current" else dnd_data.items[weapon] #TODO: Sneak attack grants a modifier to dexterity based attacks(check the class sheet)
         hit_roll = 0
         damage_score = 0
         total_ac = 0
->>>>>>> e4817f1ec2be1a4db4e7596c98d6fcf037e885d1
         for i in targets:
             # ============ #
             # dodge_mechanics
@@ -318,11 +297,6 @@ Parameters will have to be passed as in the example given below:
                 hit_score = hit_roll + modifier + self.proficiency_bonus
                 print("... Adding hit roll ({}), modifier ({}) and proficiency bonus ({}), sum is: {}".format(
                     hit_roll, modifier, self.proficiency_bonus, hit_score))
-<<<<<<< HEAD
-                if hit_roll == 20:
-                    damage_roll = dnd_mechanics.roll(self.hit_dice[0], self.hit_dice[1] * 2)
-                elif hit_roll != 20 and hit_score >= i.ac:
-=======
                 if "parry" in i.perks:
                     total_ac += dnd_mechanics.roll(6, 1)
                 else:
@@ -330,16 +304,11 @@ Parameters will have to be passed as in the example given below:
                 if hit_roll == 20:
                     damage_roll = dnd_mechanics.roll(self.hit_dice[0], self.hit_dice[1] * 2)
                 elif hit_roll != 20 and hit_score >= total_ac:
->>>>>>> e4817f1ec2be1a4db4e7596c98d6fcf037e885d1
                     damage_roll = dnd_mechanics.roll(self.hit_dice[0], self.hit_dice[1])
                 else:
                 # ===== MISS ====== #
                     print("{} missed, hit score({}) is lesser that {} armor class ({})".format(self.name, hit_score,
-<<<<<<< HEAD
-                                                                                           i.name, i.ac))
-=======
                                                                                            i.name, total_ac))
->>>>>>> e4817f1ec2be1a4db4e7596c98d6fcf037e885d1
                     break
                 damage_score = damage_roll + modifier
                 damage_type = wpn["damage"][2]
@@ -361,11 +330,7 @@ Parameters will have to be passed as in the example given below:
                     self.checkOnEnemy(i)
             elif i.hp <= 0 and i.physical_state != "dead":
                 if damage_score >= i.max_hp:
-<<<<<<< HEAD
-                    i.physical_state != "dead"
-=======
                     i.physical_state = "dead"
->>>>>>> e4817f1ec2be1a4db4e7596c98d6fcf037e885d1
                 elif hit_roll == 20 and damage_score << i.max_hp:
                     i.death_saves["failure"] += 2
                 elif hit_roll << 20 and damage_score << i.max_hp:

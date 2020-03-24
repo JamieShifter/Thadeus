@@ -20,12 +20,9 @@ class Observer(ABC):
         pass
 
 
-<<<<<<< HEAD
-=======
 
 # BELOW IS A CONCRETIZED EXAMPLE - DO NOT USE IN CODE!
 
->>>>>>> e4817f1ec2be1a4db4e7596c98d6fcf037e885d1
 class ConcreteSubject(Subject):
     _state: int = None
     _observers: List[Observer] = []

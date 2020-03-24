@@ -7,7 +7,87 @@ import dnd_save_template
 class Combat:
 
     doc = {
-
+        "attack":
+            """
+            Use it to attack other creatures, interface will guide you what to write next. If you feel confident, you
+            can use full syntax:
+            
+            >>> attack <weapon> <target>
+            
+            You can also pass multiple targets as an argument
+            
+            >>> attack <weapon> <target> <target1> ...
+            """,
+        "main":
+        """
+        Use doc <topic> to learn more about a specific command
+        
+        > doc: you just used it;)
+        
+        > attack:
+            Physical(usually non-verbal) attack on other creature, use it to shape their character;)
+            >>> attack <weapon> <target>
+            
+        > ready:
+            Can you feel it coming? Make yourself ready for it! Check this doc for more details.
+            >>> ready <observed> <trigger> <action> <target=None>
+            
+        > status:
+            See what's not shown on your screen, look into stats and souls of your characters!
+            >>> status <target>
+            
+        > stabilize:
+            Somebody's dying? Stabilize them, 'cause that's what heroes do...
+            >>> stabilize <target>
+            
+        > knockout:
+            Knock the s*it out of this guy lying there helplessly...
+            >>> knockout <target>
+            
+        > kill:
+            That's brutal. Use it to instantly kill unconscious creature(also works as a mercy kill).
+            >>> kill <target>
+            
+        > perk:
+            Oh boy, use with caution(provided you know what you're doing).
+            >>> perk <whatperk> <target>
+            
+        > spell:
+            Do you believe in magic? Or The Force?
+            >>> spell <whatspell> <target>
+            
+        > move:
+            What's more to say about it, just do it
+            >>> move <distance>
+            
+        > dash:
+            This is a bit tricky, use it to double your speed(counts as an action)
+            >>> dash <distance>(optional)
+            
+        > disengage:
+            Tired of fighting? Use it
+            >>> disengage
+        
+        > dodge:
+            Not a car, but an action. Use it if you anticipate that someone will attack you soon, doesn't work in real life
+            >>> dodge
+        
+        > help:
+            Literally help somebody in whatever they're doing. Funny outcomes possible:D
+            >>> help <target>
+        
+        > hide:
+            Sneaky Sneaky
+            >>> hide
+        
+        > search:
+            Use it to search the object for a target object(i.e search wardrobe for your cool new socks)
+            >>> search <object> <target>
+        
+        > use:
+            Use object on a target(i.e person). Do not objectify other people, that's rude.
+            >>> use <object> <target>
+        """
     }
 
 
@@ -105,7 +185,7 @@ class Combat:
                     if request == "__stop":         # exit combat
                         stat = False
                         finished = True
-                    elif "attack" in request:   # TODO: Need to fix usage of weapons not possessed
+                    elif "attack" in request[:6]:   # TODO: Need to fix usage of weapons not possessed
                         weapon = None
                         target = None
                         if request == "attack":
@@ -137,7 +217,7 @@ class Combat:
                                 finished = True
                         else:
                             print("Try again, the format is not correct")
-                    elif "doc" in request:
+                    elif "doc" in request[:4]:
                         if request == "doc":
                             print(self.doc["main"])
                         elif " " in request:
@@ -146,6 +226,71 @@ class Combat:
                                 print(self.doc[kwd])
                             else:
                                 print("There is no such command as {}, try writing 'doc' alone to see available commands")
+                    elif "ready" in request[:5]:
+                        observed = request.split(" ")[1] if " " in request and len(request.split(" ")) > 1 else str(input("Who are you watching?\n-> "))
+                        trigger = request.split(" ")[2] if " " in request and len(request.split(" ")) > 2 else str(input("To do what?\n-> "))
+                        action = request.split(" ")[3] if " " in request and len(request.split(" ")) > 3 else str(input("What are you gonna do then?\n-> "))
+                        target = request.split(" ")[4] if " " in request and len(request.split(" ")) > 4 else str(input("To yourself? yes/no\n-> "))
+                        if target == "yes":
+                            target = char
+                        elif target == "no":
+                            target = str(input("Then to whom?\n-> "))
+                        else:
+                            print("Wrong answer")
+                        char.ready(observed, trigger, action, target=target)
+                        finished = True
+                    elif "status" in request[:6]: # TODO: Hide hp, death saving throws for enemies
+                        target = request.split(" ")[1] if " " in request else char
+                        for c in self.charpool:
+                            if target == c.name:
+                                target = c
+                        target_hp = "{}/{}".format(target.hp, target.max_hp)
+                        target_speed = "{}/{}".format(target.speed, target.max_speed)
+                        target_cur_wea = "FIXME" # TODO: Just fix it
+                        target_phy = target.physical_state
+                        target_dst = "failure: {}, success: {}".format(target.death_saves["failure"], target.death_saves["success"])
+                        next_turn = self.turn_list[self.turn_list.index(target)+1]
+                        print("""
+                        {} - vital info:
+                        
+                        HP: {}
+                        SPEED: {}
+                        CURRENT WEAPON: {}
+                        PHYSICAL STATE: {}
+                        DEATH SAVING THROWS: {}
+                        NEXT TURN: {}
+                        """.format(target.name, target_hp, target_speed, target_cur_wea, target_phy, target_dst, next_turn.name))
+                        pass
+                    elif "stabilize" in request[:9]:
+                        pass
+                    elif "knockout" in request[:8]:
+                        pass
+                    elif "kill" in request[:4]:
+                        pass
+                    elif "perk" in request[:4]:
+                        pass
+                    elif "spell" in request[:5]:
+                        pass
+                    elif "move" in request[:4]:
+                        pass
+                    elif "dash" in request[:4]:
+                        pass
+                    elif "disengage" in request[:9]:
+                        pass
+                    elif "dodge" in request[:5]:
+                        pass
+                    elif "help" in request[:4]:
+                        pass
+                    elif "hide" in request[:4]:
+                        pass
+                    elif "search" in request[:6]:
+                        pass
+                    elif "use" in request[:3]:
+                        pass
+                    else:
+                        print("There is {} command, try using 'doc' to see available commands".format(request))
+
+
                     if stat == False:
                         break
 

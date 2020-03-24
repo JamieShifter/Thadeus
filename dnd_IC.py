@@ -1,21 +1,12 @@
-<<<<<<< HEAD
-import dnd_data as dat
-import dnd_objects as ob
-import dnd_mechanics as mc
-import observer_pattern as flag
-=======
+
 import observer_pattern
->>>>>>> e4817f1ec2be1a4db4e7596c98d6fcf037e885d1
 import dnd_concrete as p_con
 
 char_pool = []
 
 
-<<<<<<< HEAD
-class readyTriggerFlagDefinition(flag.Subject):
-=======
+
 class readyTriggerFlagDefinition(observer_pattern.Subject):
->>>>>>> e4817f1ec2be1a4db4e7596c98d6fcf037e885d1
     _observers = []
     _state = 0
 
@@ -37,18 +28,9 @@ class readyTriggerFlagDefinition(observer_pattern.Subject):
     def reset_state(self):
         self._state = 0
 
-
-<<<<<<< HEAD
-def usePerk(perk, *targets):
-    if perk == "parry":
-        p_con.perks.parry(*targets)
-    elif perk == "false_appearance":
-        p_con.perks.false_appearance(*targets)
-=======
 def usePerk(caster, perk, *targets):
     if perk == "false_appearance":
         p_con.perks.false_appearance(caster, *targets)
->>>>>>> e4817f1ec2be1a4db4e7596c98d6fcf037e885d1
     elif perk == "paralyzing_ray":
         p_con.perks.paralyzing_ray(*targets)
     elif perk == "life_drain":
@@ -58,11 +40,7 @@ def usePerk(caster, perk, *targets):
     elif perk == "rotting_gaze":
         p_con.perks.rotting_gaze(*targets)
     elif perk == "slam":
-<<<<<<< HEAD
-        p_con.perks.slam(*targets)
-=======
         p_con.perks.slam(caster, *targets)
->>>>>>> e4817f1ec2be1a4db4e7596c98d6fcf037e885d1
     elif perk == "create_food_and_water":
         p_con.perks.create_food_and_water(*targets)
     elif perk == "split":
@@ -96,11 +74,8 @@ def usePerk(caster, perk, *targets):
     elif perk == "fear_ray":
         p_con.perks.fear_ray(*targets)
     elif perk == "read_thoughts":
-<<<<<<< HEAD
         p_con.perks.read_thoughts(*targets)
-=======
         p_con.perks.read_thoughts(caster, *targets)
->>>>>>> e4817f1ec2be1a4db4e7596c98d6fcf037e885d1
     else:
         print("Could not find perk {}".format(perk))
 
