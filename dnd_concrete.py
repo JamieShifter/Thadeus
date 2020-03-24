@@ -1,5 +1,6 @@
 import dnd_objects
 import dnd_mechanics
+<<<<<<< HEAD
 
 class perks:
 
@@ -13,6 +14,14 @@ class perks:
 
 
     def false_appearance(*targets):
+=======
+import dnd_data
+
+class perks:
+
+
+    def false_appearance(caster, *targets):
+>>>>>>> e4817f1ec2be1a4db4e7596c98d6fcf037e885d1
         
             pass
 
@@ -41,6 +50,7 @@ class perks:
         pass
 
 
+<<<<<<< HEAD
     def create_food_and_water(*targets):
         
             pass
@@ -48,6 +58,29 @@ class perks:
 
     def split(*targets):
         
+=======
+    def create_food_and_water(caster, *targets):
+        for target in targets:
+            if "food" and "waterskin" in target.eq:
+                target.eq["food"].quantity += 1
+                target.eq["waterskin"].quantity += 1
+            else:
+                target.eq["food"] = dnd_data.items["food"].copy()
+                target.eq["waterskin"] = dnd_data.items["waterskin"].copy()
+                target.eq["food"].quantity += 1
+                target.eq["waterskin"].quantity += 1
+
+
+    def split(*targets):
+        for target in targets:
+            if target.hp > target.max_hp/2:
+                new_name = target.name + " {}".format(split_counter)
+                dnd_objects.char_dict[new_name] = dnd_objects.crude_make_creature(new_name,
+                                                                                  crt_type=dnd_data.creatures["ochre_jelly"])
+                target.hp //= 2
+                dnd_objects.char_dict[new_name].hp //= 2
+
+>>>>>>> e4817f1ec2be1a4db4e7596c98d6fcf037e885d1
             pass
 
 
@@ -121,8 +154,15 @@ class perks:
         pass
 
 
+<<<<<<< HEAD
     def read_thoughts(*targets):
         pass
+=======
+    def read_thoughts(caster, *targets):
+        for target in targets:
+            print("{} has read the thoughts of {}! Now {} must reveal one thing {} asks!".
+                  format(caster, target, target, caster))
+>>>>>>> e4817f1ec2be1a4db4e7596c98d6fcf037e885d1
 
 
 perks = perks

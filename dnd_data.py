@@ -164,7 +164,11 @@ itemlist_8 = itemlist_3 + itemlist_0
 itemlist = [itemlist_0, itemlist_1, itemlist_2, itemlist_3, itemlist_8]
 
 
+<<<<<<< HEAD
 perks = {'parry': {'type': 'active', 'group': 'creature_method', 'relevance': 'high'}, # TODO: Type and groups -> Perks classes/methods -> Creature.addMethod(Method)
+=======
+perks = {'parry': {'type': 'passive', 'group': 'modifier', 'relevance': 'high'}, # TODO: Type and groups -> Perks classes/methods -> Creature.addMethod(Method)
+>>>>>>> e4817f1ec2be1a4db4e7596c98d6fcf037e885d1
          'amorphous': {'type': 'passive', 'group': 'cosmetic', 'relevance': 'low'},
          'darkvision': {'type': 'passive', 'group': 'modifier', 'relevance': 'high'},
          'fey_ancestry': {'type': 'passive', 'group': 'modifier', 'relevance': 'low'},
