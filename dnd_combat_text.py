@@ -326,11 +326,10 @@ class Combat:
             self.initiative_scores[str(char.name)] = score
 
         while len(self.initiative_scores) > 0:
-            max_init = max(self.initiative_scores)
-            for c in self.charpool:
-                if c.name == max_init:
-                    self.turn_list.append(c)
-                    del self.initiative_scores[max_init]
+            max_value = max(self.initiative_scores.values())
+            character = [name for name, score in self.initiative_scores.items() if score == max_value][0]
+            self.turn_list.append([c for c in self.charpool if c.name == character][0])
+            del self.initiative_scores[character]
 
         for i in self.turn_list:
             if i in self.surprise_list:
