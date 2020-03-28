@@ -431,14 +431,15 @@ Parameters will have to be passed as in the example given below:
             print("...{} can't hide right now, {} is dying".format(self.name, self.name))
 
 
-    def search(self):
+    def search(self, obj, target):
         if self.hp >= 0:
+            print("You're looking for {} in {}".format(target, obj))
             score = dnd_mechanics.roll(20, 1)
             total = self.skills["perception"] + score
             if total >= 10:
-                print("Success, you've found it!")
+                print("Success, you've found {}!".format(target))
             else:
-                print("After a while of searching, you didn't manage to find it...")
+                print("After a while of searching, you didn't manage to find {}".format(target))
         else:
             print("...{} can't search anything right now, {} is dying".format(self.name, self.name))
 
