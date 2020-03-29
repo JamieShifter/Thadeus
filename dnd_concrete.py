@@ -4,34 +4,26 @@ import dnd_data
 
 class perks:
 
-
-    def false_appearance(caster, *targets):
+    def __init__(self):
         pass
 
-
-    def nimble_escape(*targets):
+    def false_appearance(self, caster, *targets):
         pass
-
 
     def paralyzing_ray(*targets):
         pass
 
-
     def life_drain(*targets):
         pass
-
 
     def blood_drain(*targets):
         pass
 
-
     def rotting_gaze(*targets):
         pass
 
-
     def slam(*targets):
         pass
-
 
     def create_food_and_water(caster, *targets):
         for target in targets:
@@ -131,4 +123,4 @@ class perks:
                   format(caster, target, target, caster))
 
 
-perks = perks
+perks = perks()

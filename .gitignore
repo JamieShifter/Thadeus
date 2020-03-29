@@ -1,6 +1,7 @@
 .idea/
 __pycache__/
-dbs/
+dbs/dnd_creatures.xlsx
+dbs/dnd_objects.xlsx
 desktop.ini
 task.txt
 test.txt

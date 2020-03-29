@@ -1,7 +1,7 @@
 import dnd_objects
 import dnd_data
 import dnd_mechanics
-import dnd_save_template
+import dnd_current_scenario
 
 
 class Combat:
@@ -281,7 +281,7 @@ class Combat:
         self.surprise_list = []
         self.heroes = []
         self.enemies = []
-        self.charpool = dnd_save_template.charpool
+        self.charpool = dnd_current_scenario.charpool
         self.initiative_scores = {}
         self.turn_list = []
         self.assign()
@@ -349,7 +349,7 @@ class Combat:
         print("+===============================================================+\n")
         print("WELCOME TO THADEUS TURN COMBAT SYSTEM\n")
         print("+===============================================================+\n\n\n")
-        while stat:
+        while stat: # TODO: knock out and kill counters
             if h_counter == len(self.heroes) or e_counter == len(self.enemies):
                 """
                 Every time someone is knocked out or killed, respective counter is incremented. 
@@ -465,7 +465,7 @@ class Combat:
                             print("Wrong answer\n")
                         char.ready(observed, trigger, action, target=target)
                         finished = True
-                    elif "status" in request[:6]: # TODO: Hide hp, death saving throws for enemies
+                    elif "status" in request[:6]:
                         target = request.split(" ")[1] if " " in request else char
                         for c in self.charpool:
                             if target == c.name:

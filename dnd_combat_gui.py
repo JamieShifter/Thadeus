@@ -1,10 +1,18 @@
 import dnd_objects
 import dnd_data
 import dnd_mechanics
-import dnd_save_template
 
 
 class Combat:
+    """
+    Order of use:
+    1. make an instance of Combat()
+    2. instance.load_scenario(path to scenario)
+    3. instance.load_charpool()
+    4. instance.start_routine()
+    5. instance.run()
+
+    """
 
     def __init__(self, conditions=0):
         """
@@ -18,9 +26,11 @@ class Combat:
         self.surprise_list = []
         self.heroes = []
         self.enemies = []
-        self.charpool = dnd_save_template.charpool
+        self.charpool = []
         self.initiative_scores = {}
         self.turn_list = []
+
+    def start_routine(self):
         self.assign()
         self.check_for_surprise()
         self.sort()
@@ -77,13 +87,87 @@ class Combat:
         request = str(input("->  "))
         return request
 
+    def load_scenario(self, scenario): # TODO: Importing combat scenarios after button click
+        """
+        Current idea is to import one file: dnd_current_scenario, but before doing it - rewrite it from a different
+        scenario file. So you specify the path -> file gets opened -> file gets copied -> file gets written as new current
+        scenario file -> then import current scenario file -> use charpool that exists there.
 
-game_on = Combat()
+        :param scenario: path to an existing scenario
+        :return: nothing, just assigns a charpool with created characters.
+        """
+        open("dnd_current_scenario.py", "w").close()
+        f = open('{}'.format(scenario))
+        f1 = open('dnd_current_scenario.py', 'a')
+        for x in f.readlines():
+            f1.write(x)
+        f.close()
+        f1.close()
 
-new_game = Combat()
-print("1st list : 2nd list")
-for i in range(len(game_on.turn_list)):
-    print("{} : {}".format(game_on.turn_list[i].name, new_game.turn_list[i].name))
+    def load_charpool(self):
+        import dnd_current_scenario
+        self.charpool = dnd_current_scenario.charpool
+
+    def run(self):
+        stat = True
+        h_counter = 0
+        e_counter = 0
+        while stat:  # TODO: knock out and kill counters
+            if h_counter == len(self.heroes) or e_counter == len(self.enemies):
+                stat = False
+            for char in self.turn_list:
+                print(char.name
+                      )
+                main_action_counters = {
+                    "attack": 0,
+                    "dodge": 0,
+                    "ready": 0,
+                    "hide": 0,
+                    "use": 0,
+                    "stabilize": 0,
+                    "perk": 0,
+                    "spell": 0,
+                    "dash": 0,
+                    "disengage": 0,
+                    "help": 0,
+                }
+
+                bonus_action_counters = {
+                    "knockout": 0,
+                    "kill": 0,
+                    "use": 0,
+                    "move": 0,
+                    "special_perk": 0,
+                    "search": 0,
+                    "other": 0,
+                }
+                main_counter = 0
+                bonus_counter = 0
+                finished = False
+                if stat == False:
+                    break
+                while not finished:
+                    # THOSE LINES ARE TO BE REMOVED ONCE GUI IS IMPLEMENTED
+                    request = str(input())
+                    if request == "main":
+                        main_action_counters["attack"] += 1
+                    elif request == "bonus":
+                        bonus_action_counters["other"] += 1
+                    # ======================================================
+                    if 1 in main_action_counters.values():
+                        main_counter = 1
+                    if 1 in bonus_action_counters.values():
+                        bonus_counter = 1
+                    if main_counter == 1 and bonus_counter == 1:
+                        finished = True
+                        print("One tour finished")
+
+
+
+
+# game_on = Combat()
+# game_on.run()
+
 
 
 
