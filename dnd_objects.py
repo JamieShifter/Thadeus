@@ -102,6 +102,30 @@ Parameters will have to be passed as in the example given below:
 
         self.carrying_cap = 0
 
+        self.main_action_counters = {
+            "attack": 0,
+            "dodge": 0,
+            "ready": 0,
+            "hide": 0,
+            "use": 0,
+            "stabilize": 0,
+            "perk": 0,
+            "spell": 0,
+            "dash": 0,
+            "disengage": 0,
+            "help": 0,
+        }
+
+        self.bonus_action_counters = {
+            "knockout": 0,
+            "kill": 0,
+            "use": 0,
+            "move": 0,
+            "special_perk": 0,
+            "search": 0,
+            "other": 0,
+        }
+
     def weaponUsedNow(self):
         eq_on_list = self.eq_on[:]
         return eq_on_list[0]
@@ -286,6 +310,7 @@ Parameters will have to be passed as in the example given below:
 
 
     def attack(self, weapon="current", *targets): #TODO: If character has more dexterity than strength, he can choose to use it as a modifier if a weapon is light enough:/
+        self.placeholder["attack_successful"] = False
         wpn = self.weaponUsedNow() if weapon == "current" else dnd_data.items[weapon] #TODO: Sneak attack grants a modifier to dexterity based attacks(check the class sheet)
         hit_roll = 0
         damage_score = 0
@@ -328,21 +353,24 @@ Parameters will have to be passed as in the example given below:
                 damage_score = damage_roll + modifier
                 damage_type = wpn["damage"][2]
                 if "immunity.{}".format(damage_type) in i.special:
-                    i.hp -= 0
                     print("{0} hit with {1}, it seems to have no effect!".format(i.name, wpn['name']))
                     self.checkOnEnemy(i)
+                    self.placeholder["attack_successful"] = False
                 elif "vulnerability.{}".format(damage_type) in i.special:
                     i.hp -= damage_score * 2
                     print("{0} hit with {1}, caused damage is {2}".format(i.name, wpn['name'], damage_score * 2))
                     self.checkOnEnemy(i)
+                    self.placeholder["attack_successful"] = True
                 elif "resistance.{}".format(damage_type) in i.special:
                     i.hp -= damage_score / 2
                     print("{0} hit with {1}, caused damage is {2}".format(i.name, wpn['name'], damage_score / 2))
                     self.checkOnEnemy(i)
+                    self.placeholder["attack_successful"] = True
                 else:
                     i.hp -= damage_score
                     print("{0} hit with {1}, caused damage is {2}".format(i.name, wpn['name'], damage_score))
                     self.checkOnEnemy(i)
+                    self.placeholder["attack_successful"] = True
             elif i.hp <= 0 and i.physical_state != "dead":
                 if damage_score >= i.max_hp:
                     i.physical_state = "dead"
@@ -616,6 +644,7 @@ char_dict = {}
 
 if __name__ == "__main__":
     Jelly = crude_make_creature("Jelly", crt_type=dnd_data.creatures["ochre_jelly"])
+
     Jelly.usePerk("split")
 
 

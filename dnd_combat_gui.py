@@ -108,6 +108,12 @@ class Combat:
         import dnd_current_scenario
         self.charpool = dnd_current_scenario.charpool
 
+    def reset_counters(self, creature):
+        for k, v in creature.main_action_counters.items():
+            creature.main_action_counters[k] = 0
+        for k, v in creature.bonus_action_counters.items():
+            creature.bonus_action_counters[k] = 0
+
     def run(self):
         stat = True
         h_counter = 0
@@ -117,35 +123,21 @@ class Combat:
                 stat = False
             for char in self.turn_list:
                 print(char.name)
-                main_action_counters = {
-                    "attack": 0,
-                    "dodge": 0,
-                    "ready": 0,
-                    "hide": 0,
-                    "use": 0,
-                    "stabilize": 0,
-                    "perk": 0,
-                    "spell": 0,
-                    "dash": 0,
-                    "disengage": 0,
-                    "help": 0,
-                }
-
-                bonus_action_counters = {
-                    "knockout": 0,
-                    "kill": 0,
-                    "use": 0,
-                    "move": 0,
-                    "special_perk": 0,
-                    "search": 0,
-                    "other": 0,
-                }
+                if "rechargable" in char.placeholder.keys():
+                    if char.placeholder["rechargable"] > 0:
+                        char.placeholder["rechargable"] -= 1
+                    else:
+                        pass
+                main_action_counters = char.main_action_counters
+                bonus_action_counters = char.bonus_action_counters
                 main_counter = 0
                 bonus_counter = 0
                 finished = False
                 if stat is False:
                     break
                 while not finished:
+                    if char in self.surprise_list:
+                        self.surprise_list.remove(char)
                     if char.turns_to_skip["quantity"] > 0:
                         print("{} has to skip turn.\nReason: {}".format(char.name, char.turns_to_skip["reason"]))
                         char.turns_to_skip["quantity"] -= 1
@@ -167,6 +159,7 @@ class Combat:
                         if 1 in bonus_action_counters.values():
                             bonus_counter = 1
                         if main_counter == 1 and bonus_counter == 1:
+                            self.reset_counters(char)
                             finished = True
                             print("One tour finished")
 

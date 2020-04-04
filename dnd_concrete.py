@@ -168,7 +168,7 @@ class perks:
         else:
             pass
 
-    def second_wind(*targets):
+    def second_wind(self, caster, *targets):
         for target in targets:
             roll = dnd_mechanics.roll(10, 1)
             recover = roll + target.level
@@ -182,26 +182,77 @@ class perks:
                 print("{} tried to use second wind, but something went wrong".format(target.name))
 
 
-    def multiattack(*targets):
-        
+    def multiattack(self, caster, *targets):
+        # REMEMBER TO USE IT AS A BONUS ACTION!
+        caster.main_action_counters["attack"] = -1
+
+
+    def wounding_ray(self, caster, target):
+        target_saving_throw = dnd_mechanics.roll(20, 1) + target.abilities["con"]
+        hit_roll = dnd_mechanics.roll(10, 3)
+        print("{} has used Wounding Ray on {}!".format(caster.name, target.name))
+        damage = (hit_roll//2) if target_saving_throw >= 13 else hit_roll
+        print("It dealt {} of damage!".format(str(damage)))
+
+
+    def poison_breath(self, caster, *targets):
+        if "rechargable" in caster.placeholder.keys():
             pass
+        else:
+            caster.placeholder["rechargable"] = 0
+        if caster.placeholder["rechargable"] > 0:
+                print("{} probably tried to use Poison Breath, but it failed to do so...")
+        else:
+            damage_roll = dnd_mechanics.roll(6, 12)
+            for target in targets:
+                damage_taken = 0
+                message = ""
+                target_saving_throw = dnd_mechanics.roll(20, 1) + target.abilities["con"]
+                damage_score = {"immunity": {"score": 0, "message": "{} seems to be immune to poison breath and takes no damage!".format(target.name)},
+                                "resistance": {"score": damage_roll/4 if target_saving_throw >= 14 else damage_roll/2, "message": "{} only takes {} damage from poison breath".format(target.name, str(damage_roll/2))},
+                                "vulnerability": {"score": damage_roll if target_saving_throw >= 14 else damage_roll*2, "message": "For {}, the posion breath was devastating, taking {} damage".format(target.name, str(damage_roll*2))},
+                                "normal": {"score": damage_roll/2 if target_saving_throw >= 14 else damage_roll, "message": "{} takes {} damage from poison breath!".format(target.name, str(damage_roll))}}
+                for k, v in damage_score.items():
+                    if "{}.damage.poison".format(k) in target.special:
+                        damage_taken = v["score"]
+                        message = v["message"]
+                    else:
+                        damage_taken = damage_score["normal"]["score"]
+                        message = damage_score["normal"]["message"]
+                target.hp -= damage_taken
+                print(message)
+            caster.placeholder["rechargable"] = 5
 
-
-    def wounding_ray(*targets):
-        pass
-
-
-    def poison_breath(*targets):
-        pass
-
-
-    def web(*targets):
-        pass
-
-
-    def surprise_attack(*targets):
-        
+    def web(self, caster, target):
+        if "rechargable" in caster.placeholder.keys():
             pass
+        else:
+            caster.placeholder["rechargable"] = 0
+        if caster.placeholder["rechargable"] > 0:
+            print("{} probably tried to use Web, but it failed to do so...")
+        else:
+            hit_roll = dnd_mechanics.roll(20, 1) + 5
+            target_saving_throw = dnd_mechanics.roll(20, 1) + target.abilities["str"]
+            if hit_roll > target.ac:
+                print("{} shot a web, restraining {} in the process!".format(caster.name, target.name))
+                if target_saving_throw >= 12:
+                    print("Using all the might and determination {} managed to escape the web!".format(target))
+                else:
+                    target.physical_state = "restrained"
+            else:
+                print("{} shot a web missle to {} but missed!".format(caster.name, target.name))
+            caster.placeholder["rechargable"] = 5
+
+    def surprise_attack(self, caster, target):
+        if target in dnd_combat_gui.game_on.surprise_list:
+            current_weapon = caster.weaponUsedNow()
+            caster.attack(current_weapon, target)
+            if caster.placeholder["attack_successful"] is True:
+                damage = dnd_mechanics.roll(6, 2)
+                target.hp -= damage
+                print("Due to a surprise attack, {} takes {} additional damage!".format(target.name, str(damage)))
+            else:
+                pass
 
 
     def confusion_ray(*targets):
