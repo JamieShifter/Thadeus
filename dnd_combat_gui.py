@@ -144,29 +144,35 @@ class Combat:
                 main_counter = 0
                 bonus_counter = 0
                 finished = False
-                if stat == False:
+                if stat is False:
                     break
                 while not finished:
-                    # THOSE LINES ARE TO BE REMOVED ONCE GUI IS IMPLEMENTED
-                    request = str(input())
-                    if request == "main":
-                        main_action_counters["attack"] += 1
-                    elif request == "bonus":
-                        bonus_action_counters["other"] += 1
-                    # ======================================================
-                    if 1 in main_action_counters.values():
-                        main_counter = 1
-                    if 1 in bonus_action_counters.values():
-                        bonus_counter = 1
-                    if main_counter == 1 and bonus_counter == 1:
+                    if char.turns_to_skip["quantity"] > 0:
+                        print("{} has to skip turn.\nReason: {}".format(char.name, char.turns_to_skip["reason"]))
+                        char.turns_to_skip["quantity"] -= 1
                         finished = True
-                        print("One tour finished")
+                    else:
+                        # THOSE LINES ARE TO BE REMOVED ONCE GUI IS IMPLEMENTED
+                        request = str(input())
+                        if request == "main":
+                            main_action_counters["attack"] += 1
+                        elif request == "bonus":
+                            bonus_action_counters["other"] += 1
+                        # ======================================================
+                        if 1 in main_action_counters.values():
+                            main_counter = 1
+                        if 1 in bonus_action_counters.values():
+                            bonus_counter = 1
+                        if main_counter == 1 and bonus_counter == 1:
+                            finished = True
+                            print("One tour finished")
 
 
 
+if __name__ == "__main__":
+    game_on = Combat()
+    game_on.run()
 
-# game_on = Combat()
-# game_on.run()
 
 
 

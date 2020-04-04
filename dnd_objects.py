@@ -60,6 +60,11 @@ Parameters will have to be passed as in the example given below:
         self.watchlist = {"attack": 0, "hide": 0, "disengage": 0, "dodge": 0, "move": 0}
         self.actionlist = {"attack": 0, "hide": 0, "disengage": 0, "dodge": 0, "move": 0}
         self.target = ''
+        self.turns_to_skip ={
+            "quantity": 0,
+            "reason": ""
+        }
+        self.placeholder = {}
         # STATS
         self.abilities = {
             'con': 0,
@@ -128,6 +133,9 @@ Parameters will have to be passed as in the example given below:
             self.actionlist["move"] = 0
         dnd_IC.readyTriggerFlag.reset_state()
 
+    def skip_turn(self, quantity, reason):
+        self.turns_to_skip["quantity"] = quantity
+        self.turns_to_skip["reason"] = reason
 
     def ready(self, observed, trigger, action, target=None):
         try:
@@ -248,6 +256,13 @@ Parameters will have to be passed as in the example given below:
         if target.hp <= 0:
             target.physical_state = "unconscious"
             print("{} is uncoscious".format(target.name))
+        else:
+            pass
+
+    def checkOnMe(self): # THIS METHOD CAN BE UPDATED WITHIN IT"S USAGE
+        self.weightCheck()
+        if self.hp <= 0 and (self.physical_state != "unconscious" or self.physical_state != "dead"):
+            self.physical_state = "unconscious"
         else:
             pass
 
