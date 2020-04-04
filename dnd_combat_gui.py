@@ -116,8 +116,7 @@ class Combat:
             if h_counter == len(self.heroes) or e_counter == len(self.enemies):
                 stat = False
             for char in self.turn_list:
-                print(char.name
-                      )
+                print(char.name)
                 main_action_counters = {
                     "attack": 0,
                     "dodge": 0,
@@ -158,6 +157,10 @@ class Combat:
                             main_action_counters["attack"] += 1
                         elif request == "bonus":
                             bonus_action_counters["other"] += 1
+                        elif request == "split":
+                            char.usePerk("split")
+                        else: # DANGEROUS BUT NECESSARY FOR TESTING, DELETE OR HASH ONCE DONE
+                            eval(request)
                         # ======================================================
                         if 1 in main_action_counters.values():
                             main_counter = 1
@@ -168,10 +171,19 @@ class Combat:
                             print("One tour finished")
 
 
-
-if __name__ == "__main__":
-    game_on = Combat()
-    game_on.run()
+game_on = Combat()
+game_on.load_scenario(r"C:\Users\User\PycharmProjects\Thadeus\dbs\combat_scenarios\test_scenario_ochre_jelly.txt")
+# FOR TESTING OF COURSE MODIFY THE PATH TO SCENARIO
+game_on.load_charpool()
+game_on.start_routine()
+# game_on.run()
+# if __name__ == "__main__":
+#     game_on = Combat()
+#     game_on.load_scenario(r"C:\Users\User\PycharmProjects\Thadeus\dbs\combat_scenarios\test_scenario_ochre_jelly.txt")
+#     # FOR TESTING OF COURSE MODIFY THE PATH TO SCENARIO
+#     game_on.load_charpool()
+#     game_on.start_routine()
+#     game_on.run()
 
 
 

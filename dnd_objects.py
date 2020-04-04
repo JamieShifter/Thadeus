@@ -615,15 +615,8 @@ char_dict = {}
 
 
 if __name__ == "__main__":
-
-    Thadeus = crude_make_creature("Thadeus")
-    Marita = crude_make_creature("Marita")
-    Absol = crude_make_creature("Absol")
-    Enemy = crude_make_creature("Enemy", crt_type=dnd_data.creatures["doppelganger"])
-    Thadeus.balancedLootMoney(Enemy, Thadeus, Marita, Absol)
-    people = [Thadeus, Marita, Absol, Enemy]
-    for i in people:
-        print(i.eq['moneybag'])
+    Jelly = crude_make_creature("Jelly", crt_type=dnd_data.creatures["ochre_jelly"])
+    Jelly.usePerk("split")
 
 
 

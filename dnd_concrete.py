@@ -147,8 +147,19 @@ class perks:
             caster.placeholder["split_counter"] = 1
             new_name = caster.name + str(caster.placeholder["split_counter"]+1)
             Splitted = dnd_objects.crude_make_creature(new_name, crt_type=dnd_data.creatures["ochre_jelly"])
-            caster.hp, Splitted.hp = division_hp
-            caster.max_hp, Splitted.max_hp = division_max_hp
+            caster.hp, Splitted.hp = division_hp, division_hp
+            caster.max_hp, Splitted.max_hp = division_max_hp, division_max_hp
+            Splitted.eq = {}
+            no_of_items = len(caster.eq)//2
+            counter = 0
+            temp_eq = caster.eq.copy()
+            for key, value in temp_eq.items():
+                if counter == no_of_items:
+                    break
+                else:
+                    Splitted.eq[key] = value
+                    del caster.eq[key]
+                    counter += 1
             Splitted.placeholder["split_counter"] = 1
             dnd_combat_gui.game_on.charpool.append(Splitted)
             dnd_combat_gui.game_on.turn_list.append(Splitted)
